@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title> HDID log message table </title>
+
+    <!--
+    <link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+      <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css' rel='stylesheet' type='text/css'>
+      <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/css/bootstrap-switch.css' rel='stylesheet' type='text/css'>
+-->
+<link rel="stylesheet" type="text/css" src="{{ url_for('static', filename='customer.css')}}">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<!--
+    <script type=text/javascript>
+      $(function() {
+        $('a#login_input').bind('click', function() {
+        $.getJSON('/login_process', {
+
+        }, function(data) {
+          $("#result").text(data.result);
+        });
+        return false;
+        });
+      });
+      </script>
+    -->
+
+    <script type=text/javascript>
+      $(function() {
+        $('a#login_input').bind('click', function() {
+          window.location.href = '/login_process';
+        });
+
+      });
+      </script>
+
+</head>
+<body>
+<div class="topright">
+
+
+        <input type="button" value="Log in"
+    onclick="window.location.href='/login'; return false;" />
+        <br>
+
+
+    <!--
+      <a href=# id=login_input><input type="button" value="Log In" />
+        <br>
+      -->
+</div>
+<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Severity</th>
+                <th>Category</th>
+                <th>Text</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for item in message_item %}
+          <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[3]}}</td>
+            <td><a  href="/details?logId={{item[0]}}">Details</a> </td>
+<!--
+            <form  method="post" name="logID" value={{item[0]}}>
+              <input type="submit"/>
+            </form>
+-->
+          </tr>
+
+          {% endfor %}
+            </tbody>
+
+    </table>
+  </body>
+
+  <script type="text/javascript">
+
+  $(document).ready(function() {
+    $('#example').DataTable();
+  } );
+
+  </script>

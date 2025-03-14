@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="emp-sales">
+<head>
+<style>
+h1 {color:red;}
+p {color:orange;}
+</style>
+</head>
+<link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css' rel='stylesheet' type='text/css'>
+  <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/css/bootstrap-switch.css' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" src="{{ url_for('static', filename='customer.css')}}">
+
+     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+     <link href="http://www.jquery-steps.com/Content/Examples?v=oArYkice2OEJI0LuKioGJ4ayetiUonme8i983GzQqX41" rel="stylesheet">
+     <script src="{{ url_for('static', filename='jquery-1.12.3.js')}}"></script>
+     <script src="{{ url_for('static', filename='jquery.steps.js')}}"></script>
+
+
+<!--
+     <script src="hdid_log_database/lib/jquery-1.11.1.min.js"></script>
+     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+   -->
+     		<script type=text/javascript>
+
+
+
+
+     			$(function() {
+
+     			  $("#process_input").click(function() {
+              $(this).val("Please wait..");
+              $(this).attr("disabled","disabled");
+
+     				$.getJSON('/background_process', {
+
+              branch_name: $('input[name="branch_name"]').val(),
+     				}, function(data) {
+
+     				  $("#result").text(data.result);
+
+              $("#process_input").val("Submit");
+              $("#process_input").removeAttr("disabled");
+
+     				});
+
+     				return false;
+     			  });
+     			});
+
+
+
+          $(function() {
+
+     			  $('#process_assign').click(function() {
+              $(this).val("Please wait..");
+              $(this).attr("disabled","disabled");
+
+
+     				$.getJSON('/background_process_assign', {
+              branch_name2: $('input[name="branch_name2"]').val(),
+              tar_name: $('input[name="tar_name"]').val(),
+     				}, function(data) {
+
+
+     				  $("#resultid").text(data.resultid);
+              $("#process_assign").val("Assign");
+              $("#process_assign").removeAttr("disabled");
+
+     				});
+     				return false;
+     			  });
+     			});
+
+
+
+
+          $(function() {
+            $('#validate_database').click(function() {
+              $(this).val("Please wait..");
+              $(this).attr("disabled","disabled");
+
+            $.getJSON('/background_validate_database', {
+              valname: $('input[name="val_name"]').val(),
+            }, function(data) {
+              $("#resultv").text(data.resultv);
+              $("#validate_database").val("Validate");
+              $("#validate_database").removeAttr("disabled");
+            });
+            return false;
+            });
+          });
+
+          $(function() {
+            $('#update_database').click(function() {
+              $(this).val("Please wait..");
+              $(this).attr("disabled","disabled");
+            $.getJSON('/background_update_database', {
+              upname: $('input[name="up_name"]').val(),
+            }, function(data) {
+              $("#resultc").text(data.resultc);
+              $("#update_database").val("Check in and Update");
+              $("#update_database").removeAttr("disabled");
+            });
+            return false;
+            });
+          });
+
+          $(function() {
+            $('#revert_branch').click(function() {
+              $(this).val("Please wait..");
+              $(this).attr("disabled","disabled");
+            $.getJSON('/revert_branch', {
+
+              br_name: $('input[name="br_name"]').val(),
+            }, function(data) {
+              $("#resultr").text(data.resultr);
+              $("#revert_branch").val("Revert");
+              $("#revert_branch").removeAttr("disabled");
+            });
+            return false;
+            });
+          });
+
+          $(function() {
+            $('#rm_branch').click(function() {
+              $(this).val("Please wait..");
+              $(this).attr("disabled","disabled");
+            $.getJSON('/remove_branch', {
+              remove_name: $('input[name="remove_name"]').val(),
+
+            }, function(data) {
+              $("#resultrm").text(data.resultrm);
+              $("#rm_branch").val("Remove");
+              $("#rm_branch").removeAttr("disabled");
+            });
+            return false;
+            });
+          });
+
+          $(function() {
+            $('#ref_branch').click(function() {
+              $(this).val("Please wait..");
+              $(this).attr("disabled","disabled");
+            $.getJSON('/refresh_branch', {
+              refresh_name: $('input[name="refresh_name"]').val(),
+
+            }, function(data) {
+              $("#resultref").text(data.resultref);
+              $("#ref_branch").val("Refresh");
+              $("#ref_branch").removeAttr("disabled");
+            });
+            return false;
+            });
+          });
+     		</script>
+
+     <div class='container'>
+    <div class='panel panel-primary dialog-panel'>
+
+        <h2>Feature Branch Unique IDs Assignment</h2>
+
+
+     <div id="example-manipulation">
+    <h3>Check out Branch</h3>
+    <section>
+        <h5>Note: Input SVN branch name: mainline, R6.7 etc.</h5>
+        <h5>By default checking out SVN branch into C:\Users\hqin\UniqueIDserver\code\branch_name</h5>
+        <p>
+        <div class='form-group'>
+            <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Branch Name *</label>
+            <div class='col-md-8'>
+              <div class='col-md-3 indent-small'>
+                <div class='form-group internal'>
+                  <input class='form-control' type='text' name="branch_name">
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+<!--
+      <div class='form-group'>
+            <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Build Dir *</label>
+            <div class='col-md-8'>
+              <div class='col-md-3 indent-small'>
+                <div class='form-group internal'>
+                  <input class='form-control' type='text' name="dir_name">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        -->
+          <!--
+        <p><a href="javascript:void(0);" onclick="$('#wizard-4').steps('check out', { title: $('#title-3').val(), content: $('#text-3').val() });">Check out</a></p>
+      -->
+        <p>(*) Mandatory</p>
+        <!--
+<a href=# id=process_input><input type="button" value="Submit"/></a>
+-->
+<input id="process_input" type="submit" value="Submit">
+
+<p>
+<p id=result>After submit, you may need to wait about 10 mins for checking out the SVN branch. You need to waiting for "Checking out succeed message"</p>
+    </section>
+    <h3>Assign Unique IDs</h3>
+    <section>
+<!--
+        <p><a href="javascript:void(0);" onclick="$('#wizard-4').steps('assign', Number($('#position-3').val()), { title: $('#title2-3').val(), content: $('#text2-3').val() });">Assign</a></p>
+
+<a href=# id=process_assign><button class='btn btn-default'>Assign</button></a>
+-->
+
+
+<div class='form-group'>
+    <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Branch Name *</label>
+    <div class='col-md-8'>
+      <div class='col-md-3 indent-small'>
+        <div class='form-group internal'>
+          <input class='form-control' type='text' name="branch_name2">
+        </div>
+      </div>
+
+    </div>
+
+    <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Target Name *</label>
+    <div class='col-md-8'>
+      <div class='col-md-3 indent-small'>
+        <div class='form-group internal'>
+          <input class='form-control' type='text' name="tar_name">
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+<input id="process_assign" type="submit" value="Assign">
+<p id=resultid></p>
+
+    </section>
+    <h3>Validate database</h3>
+    <section>
+      <div class='form-group'>
+          <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Branch Name *</label>
+          <div class='col-md-8'>
+            <div class='col-md-3 indent-small'>
+              <div class='form-group internal'>
+                <input class='form-control' type='text' name="val_name">
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+        </div>
+      <input id="validate_database" type="submit" value="Validate">
+
+      <p id=resultv></p>
+    </section>
+
+    <h3>Checkin and Update database</h3>
+    <section>
+      <div class='form-group'>
+          <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Branch Name *</label>
+          <div class='col-md-8'>
+            <div class='col-md-3 indent-small'>
+              <div class='form-group internal'>
+                <input class='form-control' type='text' name="up_name">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <input id="update_database" type="submit" value="Check in and Update">
+        <p id=resultc></p>
+    </section>
+
+  </section>
+
+
+  <h3>Revert Branch</h3>
+  <section>
+<!--
+      <p><a href="javascript:void(0);" onclick="$('#wizard-4').steps('assign', Number($('#position-3').val()), { title: $('#title2-3').val(), content: $('#text2-3').val() });">Assign</a></p>
+-->
+<div class='form-group'>
+    <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Branch name *</label>
+    <div class='col-md-8'>
+      <div class='col-md-3 indent-small'>
+        <div class='form-group internal'>
+          <input class='form-control' type='text' name="br_name">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!--
+<div class='form-group'>
+    <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Build Dir </label>
+
+    <div class='col-md-8'>
+      <div class='col-md-3 indent-small'>
+        <div class='form-group internal'>
+          <input class='form-control' type='text' name="revert_name">
+        </div>
+      </div>
+
+    </div>
+  </div>
+-->
+  <!--
+<p><a href="javascript:void(0);" onclick="$('#wizard-4').steps('check out', { title: $('#title-3').val(), content: $('#text-3').val() });">Check out</a></p>
+-->
+<p>(*) Mandatory</p>
+<input id="revert_branch" type="submit" value="Revert">
+
+<p id=resultr></p>
+
+</section>
+
+
+
+<h3>Remove Check out Branch</h3>
+<section>
+<!--
+    <p><a href="javascript:void(0);" onclick="$('#wizard-4').steps('assign', Number($('#position-3').val()), { title: $('#title2-3').val(), content: $('#text2-3').val() });">Assign</a></p>
+-->
+
+<div class='form-group'>
+  <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Build Dir </label>
+
+  <div class='col-md-8'>
+    <div class='col-md-3 indent-small'>
+      <div class='form-group internal'>
+        <input class='form-control' type='text' name="remove_name">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!--
+<p><a href="javascript:void(0);" onclick="$('#wizard-4').steps('check out', { title: $('#title-3').val(), content: $('#text-3').val() });">Check out</a></p>
+-->
+<p>(*) Mandatory</p>
+<input id="rm_branch" type="submit" value="Remove">
+
+<p id=resultrm></p>
+
+</section>
+
+
+
+<h3>Refresh collect table</h3>
+<section>
+<div class='form-group'>
+  <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Build Dir </label>
+
+  <div class='col-md-8'>
+    <div class='col-md-3 indent-small'>
+      <div class='form-group internal'>
+        <input class='form-control' type='text' name="refresh_name">
+      </div>
+    </div>
+
+  </div>
+</div>
+<p>(*) Mandatory</p>
+<input id="ref_branch" type="submit" value="Refresh">
+
+<p id=resultref></p>
+
+</section>
+
+
+</div>
+</div>
+
+</div>
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li>{{message}}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+{% endwith %}
+
+
+          <script type="text/javascript">
+
+          $("#example-manipulation").steps({
+        	    headerTag: "h3",
+        	    bodyTag: "section",
+        	    enableAllSteps: true,
+        	    enablePagination: false
+        	});
+
+     </script>
+
+     <p>
+         <a href="/">Back to List</a>
+     </p>
+</html>

@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title> HDID log message table </title>
+
+    <!--
+    <link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+      <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css' rel='stylesheet' type='text/css'>
+      <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/css/bootstrap-switch.css' rel='stylesheet' type='text/css'>
+-->
+<link rel="stylesheet" type="text/css" src="{{ url_for('static', filename='customer.css')}}">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.3.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+<!--
+    <script type=text/javascript>
+      $(function() {
+        $('a#login_input').bind('click', function() {
+        $.getJSON('/login_process', {
+
+        }, function(data) {
+          $("#result").text(data.result);
+        });
+        return false;
+        });
+      });
+      </script>
+    -->
+<!--
+    <script type=text/javascript>
+      $(function() {
+        $('a#login_input').bind('click', function() {
+          window.location.href = '/login_process';
+        });
+
+      });
+      </script>
+-->
+</head>
+<body>
+
+  <img src="static/apple-touch-icon.png" alt="HDID Log Message Database">
+  <input class="topright" type="button" value="Log In"
+onclick="window.location.href='/login'; return false;" />
+          <h1 class="page-header"> HDID Log Message Database
+          </h1>
+<div class="topright">
+
+
+
+
+        <input onchange="filterme()" type="checkbox" name="Hdetail" value="HDID details">HDID message details
+        <input onchange="filterme()" type="checkbox" name="Hcomment" value="HDID comments">HDID comment
+        <input onchange="filterme()" type="checkbox" name="Severity" value="Error">Error
+        <input onchange="filterme()" type="checkbox" name="Severity" value="Warning">Warning
+        <input onchange="filterme()" type="checkbox" name="Severity" value="Information">Information
+        <input onchange="filterme()" type="checkbox" name="Severity" value="Detail">Detail
+      	     <!--
+                <div class="table-responsive">
+               -->
+
+
+      		  <br>
+      		  </div>
+      		  <div style="text-align:left">
+      		   <br>
+      		  Branch Search <input type='text' name="branch" value="">
+      		  </div>
+      		  <br>
+      		  <div style="text-align:left">
+      		  Target Release <input type='text' name="target" value="">
+      		  </div>
+      		  <br>
+
+            <tr id="filter_col9" data-column="8">
+                <td>Column - branch</td>
+                <td align="center"><input type="text" class="column_filter" id="col8_filter"></td>
+
+            </tr>
+      		  </form>
+
+    <!--
+      <a href=# id=login_input><input type="button" value="Log In" />
+        <br>
+      -->
+</div>
+<table id="dtable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Severity</th>
+                <th>Category</th>
+                <th>Text</th>
+                <th style="display:none">arg</th>
+                <th style="display:none">filename</th>
+                <th style="display:none">fileline</th>
+                <th style="display:none">logdetails</th>
+                <th style="display:none">user</th>
+                <th style="display:none">branch</th>
+                <th style="display:none">target</th>
+                <th style="display:none">lastmodified</th>
+                <th style="display:none">version</th>
+                <th style="display:none">comment</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for item in message_item %}
+          <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[3]}}</td>
+            <td style="display:none">{{item[4]}}</td>
+            <td style="display:none">{{item[5]}}</td>
+            <td style="display:none">{{item[6]}}</td>
+            <td style="display:none">{{item[7]}}</td>
+            <td style="display:none">{{item[8]}}</td>
+            <td style="display:none">{{item[9]}}</td>
+            <td style="display:none">{{item[10]}}</td>
+            <td style="display:none">{{item[11]}}</td>
+            <td style="display:none">{{item[12]}}</td>
+            <td style="display:none">{{item[13]}}</td>
+            <td><a  href="/details?logId={{item[0]}}">Details</a> </td>
+<!--
+            <form  method="post" name="logID" value={{item[0]}}>
+              <input type="submit"/>
+            </form>
+-->
+          </tr>
+
+          {% endfor %}
+            </tbody>
+
+    </table>
+  </body>
+
+  <script type="text/javascript">
+/*
+  $(document).ready(function() {
+    $('#dtable').DataTable();
+  } );
+  */
+  function filterColumn ( i ) {
+      $('#example').DataTable().column( i ).search(
+          $('#col'+i+'_filter').val(),
+          //$('#col'+i+'_regex').prop('checked'),
+          //$('#col'+i+'_smart').prop('checked')
+      ).draw();
+  }
+
+  var dTable = $('#dtable');
+dTable.DataTable({
+
+  dom: 'Bfrtip',
+
+ buttons: [
+       {
+           extend: 'collection',
+           text: 'Export',
+           buttons: [
+               'copy',
+               'excel',
+               'csv',
+               'pdf',
+               'print'
+           ]
+       }
+   ],
+   'aoColumns': [
+             { "data": "log_id" },
+             { "data": "log_severity",searchable: "true" },
+             { "data": "log_category", searchable: "true" },
+             { "data": "text" ,orderable: false},
+             { "data": "arglist" ,orderable: false},
+             { "data": "file_name" ,orderable: false},
+             { "data": "file_line" ,orderable: false},
+             { "data": "log_details" ,searchable: "true"},
+             { "data": "user" ,orderable: false},
+             { "data": "branch" ,orderable: false},
+             { "data": "target" ,orderable: false},
+            { "data": "lastmodified"},
+            { "data": "verion" },
+            { "data": "comment"},
+             {orderable: false,},
+
+
+        ],
+        "order": [[1, 'asc']]
+
+
+ });
+
+
+
+       function filterme() {
+         //build a regex filter string with an or(|) condition
+         var types = $('input:checkbox[name="Severity"]:checked').map(function() {
+           return '^' + this.value + '\$';
+         }).get().join('|');
+         //filter in column 0, with an regex, no smart filtering, no inputbox,not case sensitive
+         $('#dtable').dataTable().fnFilter(types, 1, true, false, false, false);
+
+         //build a filter string with an or(|) condition
+        var words = $('input:checkbox[name="Hdetail"]:checked').map(function() {
+           return '^.+$';
+         }).get().join('|');
+
+         // column number is based on Html not the database,starting lod_id is 1
+        //$('#dtable').dataTable().fnFilter(words);
+        $('#dtable').dataTable().fnFilter(words, 8, true, false, false, false);
+
+
+        $('input.column_filter').on( 'keyup click', function () {
+            filterColumn( $(this).parents('tr').attr('data-column') );
+        } )
+
+        //var comm = $('input:checkbox[name="Hcomment"]:checked').map(function() {
+        // return '^.+$';
+         //}).get().join('|');
+
+        //$('#dtable').dataTable().fnFilter(comm, 12, true, false, false, false);
+
+      //  var branch = $('input:text[name="branch"]').map(function() {
+      //   return '^' + this.value + '\$';
+        // }).get().join('|');
+
+        //$('#dtable').dataTable().fnFilter(branch, 9, true, false, false, false);
+        $('input.column_filter').on( 'keyup click', function () {
+            filterColumn( $(this).parents('tr').attr('data-column') );
+        } )
+
+      }
+  </script>

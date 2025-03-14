@@ -1,0 +1,17 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My project</title>
+  </head>
+{% block body %}
+<h1>{{session['username']}} Failed to login, try again</h1>
+<form method="POST">
+  Name:<input type="text" name="name"/>
+  Password:<input type="text" name="password"/>
+  <input type="submit"/>
+</form>
+<p>
+    <a href="/">Back to List</a>
+</p>
+{% endblock %}

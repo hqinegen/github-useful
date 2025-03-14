@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" src="{{ url_for('static', filename='pace.css')}}">
+
+
+    <script src="{{ url_for('static', filename='pace.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <title>My project</title>
+  </head>
+{% block body %}
+<form method="POST">
+  Name:<input type="text" name="name"/>
+  Password:<input type="password" name="password" id="typeass"/>
+  <input type="checkbox" onclick="Toggle()">
+    <b>Show Password</b>
+  <input type="button" value='refresh' onclick='location.reload();'/>
+</form>
+
+<script>
+function Toggle() {
+            var temp = document.getElementById("typepass");
+            if (temp.type === "password") {
+                temp.type = "text";
+            }
+            else {
+                temp.type = "password";
+            }
+        }
+      </script>
+<p>
+    <a href="/">Back to List</a>
+</p>
+{% endblock %}
